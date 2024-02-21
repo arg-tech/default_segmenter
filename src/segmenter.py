@@ -19,11 +19,13 @@ class Segmenter():
 		"Simple segementer spliting texts based on regex."
 		return re.split("[.!?]",input_text)
 
-	def segmenter_default(self, path: str):
+	def segmenter_default(self, file_obj):
 		"""The default segmenter takes xAIF, segments the texts in each L-nodes,
 		introduce new L-node entries for each of the new segements and delete the old L-node entries
 		"""
-		is_json_file = Data.is_valid_json(path)
+		data = Data(file_obj)
+		path = data.get_file_path()
+		is_json_file = Data.is_valid_json()
 		if is_json_file:				
 			x_aif = AIF.get_aif(path)
 			json_dict = x_aif['AIF']
@@ -48,7 +50,7 @@ class Segmenter():
 												 segment)										
 							nodes, edges, locutions  = AIF.remove_entries(node_id, nodes, edges, locutions)
 
-				return SegmenterOutput.format_output(nodes, edges, locutions)
+				return SegmenterOutput.format_output(nodes, edges, json_dict, locutions,x_aif)
 			else:
 				return("Invalid json-aif")
 		else:
