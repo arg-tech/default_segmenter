@@ -7,6 +7,7 @@ import re
 from flask import json
 import logging
 from data import Data,AIF
+from templates import SegmenterOutput
 logging.basicConfig(datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
@@ -35,24 +36,19 @@ class Segmenter():
 					type = nodes_entry['type']
 					if type == "L":
 						segments = self.get_segments(node_text)
-						segments = [seg.strip() for seg in segments if len(seg.strip())>1]
+						segments = [seg.strip() for seg in segments if len(seg.strip()) > 1]
 						if len(segments) > 1:
 							for segment in segments:								
 								if segment != "":	
-									(nodes,
-		                             locutions,	
-									 edges) = self.add_entry(nodes,
-															 locutions,
-															 edges,
-															 participants,
-															 node_id,
-															 segment)										
+									nodes,locutions, edges = self.add_entry(nodes,
+												 locutions,
+												 edges,
+												 participants,
+												 node_id,
+												 segment)										
 							nodes, edges, locutions  = AIF.remove_entries(node_id, nodes, edges, locutions)
-				json_dict['nodes'] = nodes
-				json_dict['edges'] = edges 
-				json_dict['locutions'] = locutions
-				x_aif['AIF'] = json_dict
-				return json.dumps(x_aif)
+
+				return SegmenterOutput.format_output(nodes, edges, locutions)
 			else:
 				return("Invalid json-aif")
 		else:

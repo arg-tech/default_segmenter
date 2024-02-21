@@ -1,15 +1,23 @@
 from flask import Flask, request
-from segmenter import Segmenter
-from data import Data
+from prometheus_flask_exporter import PrometheusMetrics
+
+from src.segmenter import Segmenter
+from src.data import Data
+from src.utility import handle_errors
+
 import logging
-#logging configuration
 logging.basicConfig(datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
-
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 	
 @app.route('/segmenter-01', methods = ['GET', 'POST'])
+@metrics.summary('requests_by_status', 'Request latencies by status',
+                 labels={'status': lambda r: r.status_code})
+@metrics.histogram('requests_by_status_and_path', 'Request latencies by status and path',
+                   labels={'status': lambda r: r.status_code, 'path': lambda: request.path})
+@handle_errors  
 def segmenter_defult():
 	if request.method == 'POST':
 		file_obj = request.files['file']
