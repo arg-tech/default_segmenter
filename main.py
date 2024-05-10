@@ -21,9 +21,8 @@ metrics = PrometheusMetrics(app)
 def segmenter_defult():
 	if request.method == 'POST':
 		file_obj = request.files['file']
-		data = Data(file_obj)
-		segmenter = Segmenter()
-		result=segmenter.segmenter_default(file_obj)
+		segmenter = Segmenter(file_obj)
+		result=segmenter.segmenter_default()
 		return result
 	if request.method == 'GET':
 		info = (

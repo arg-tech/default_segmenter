@@ -12,24 +12,59 @@ logging.basicConfig(datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
 class Segmenter():
-	def __init__(self) -> None:
-		pass 
+	def __init__(self,file_obj):
+		self.file_obj = file_obj
+		self.f_name = file_obj.filename
+		self.file_obj.save(self.f_name)
+		file = open(self.f_name,'r')
+
 		
 	def get_segments(self, input_text):
 		"Simple segementer spliting texts based on regex."
 		return re.split("[.!?]",input_text)
+	
+	def is_valid_json(self):
+		''' check if the file is valid json
+		'''
 
-	def segmenter_default(self, file_obj):
+		try:
+			json.loads(open(self.f_name).read())
+		except ValueError as e:			
+			return False
+
+		return True
+	def is_valid_json_aif(sel,aif_nodes):
+		if 'nodes' in aif_nodes and 'locutions' in aif_nodes and 'edges' in aif_nodes:
+			return True
+		return False
+		
+
+	def get_aif(self, format='xAIF'):
+		if self.is_valid_json():
+			with open(self.f_name) as file:
+				data = file.read()
+				x_aif = json.loads(data)
+				if format == "xAIF":
+					return x_aif
+				else:
+					aif = x_aif.get('AIF')
+					return json.dumps(aif)
+		else:
+			return "Invalid json"
+
+	def segmenter_default(self,):
 		"""The default segmenter takes xAIF, segments the texts in each L-nodes,
 		introduce new L-node entries for each of the new segements and delete the old L-node entries
 		"""
-		data = Data(file_obj)
-		path = data.get_file_path()
-		is_json_file = Data.is_valid_json()
+		aif = AIF()
+
+
+		
+		is_json_file = True
 		if is_json_file:				
-			x_aif = AIF.get_aif(path)
+			x_aif = self.get_aif()
 			json_dict = x_aif['AIF']
-			if AIF.is_valid_json_aif(json_dict):
+			if self.is_valid_json_aif(json_dict):
 				nodes, locutions, edges, participants = json_dict['nodes'], json_dict['locutions'], json_dict['edges'], json_dict.get("participants",[])
 				old_nodes = nodes.copy()			
 				for nodes_entry in old_nodes:
@@ -48,9 +83,9 @@ class Segmenter():
 												 participants,
 												 node_id,
 												 segment)										
-							nodes, edges, locutions  = AIF.remove_entries(node_id, nodes, edges, locutions)
+							nodes, edges, locutions  = aif.remove_entries(node_id, nodes, edges, locutions)
 
-				return SegmenterOutput.format_output(nodes, edges, json_dict, locutions,x_aif)
+				return x_aif
 			else:
 				return("Invalid json-aif")
 		else:
