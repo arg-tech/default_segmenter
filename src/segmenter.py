@@ -6,8 +6,8 @@ introduces new L-node entries for each of the new segments, and deletes the old 
 import re
 from flask import json
 import logging
-from data import Data,AIF
-from templates import SegmenterOutput
+from src.data import Data,AIF
+from src.templates import SegmenterOutput
 logging.basicConfig(datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
