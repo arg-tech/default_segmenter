@@ -1,6 +1,9 @@
 import json
 from typing import Dict, List
 
+
+
+
 class Data:
     def __init__(self, file_obj):
         self.file_obj = file_obj
@@ -8,36 +11,28 @@ class Data:
         self.file_obj.save(self.f_name)
 
     def is_valid_json(self):
-        ''' check if the file is valid json
-		'''
-
+        ''' check if the file is valid json '''
         try:
-            json.loads(open(self.f_name).read())
-        except ValueError as e:			
+            with open(self.f_name) as f:
+                json.load(f)
+        except ValueError:
             return False
-
         return True
-    def is_valid_json_aif(sel,aif_nodes):
+
+    @staticmethod
+    def is_valid_json_aif(aif_nodes):
         if 'nodes' in aif_nodes and 'locutions' in aif_nodes and 'edges' in aif_nodes:
             return True
         return False
-        
 
     def get_aif(self):
-        if self.is_valid_json(format='xAIF'):
-            with open(self.f_name) as file:
-                data = file.read()
-                x_aif = json.loads(data)
-                if format == "xAIF":
-                    return x_aif
-                else:
-                    aif = x_aif.get('AIF')
-                    return json.dumps(aif)
-        else:
-            return "Invalid json"
-        
-    def get_file_path(self,):
-            return self.f_name
+        with open(self.f_name) as file:
+            data = file.read()
+            x_aif = json.loads(data)
+        return x_aif
+
+    def get_file_path(self):
+        return self.f_name
     
 class AIF:
     def __init__(self, ):
