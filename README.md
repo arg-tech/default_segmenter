@@ -95,9 +95,6 @@ If you prefer to install without Docker:
 
 
 
-It seems like there might be a typo in your Markdown where you're trying to include the image (`n8n_screenshot.jpeg`). The issue appears to be with the filename in the `<img>` tag. Here’s how you can correct and ensure the image is displayed properly:
-
-```markdown
 ## Usage
 
 ### Using Programming Interface
