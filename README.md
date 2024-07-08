@@ -141,24 +141,10 @@ curl -X POST \
 
 The service can also be used to create a pipeline on our n8n interface. Simply create an HTTP node, configure the node including the URL of the service and the parameter name of the file (`file`).
 
-![n8n_screenshot](img/n8n_screnshot.png)
+
 
 
 <div style="text-align:center;">
     <img src="img/n8n_screnshot.png" alt="Image Description" width="100%">
 </div>
 
-<img src="img/n8n_screnshot.png" alt="n8n_screenshot" />
-![Alt text](img/n8n_screenshot.png)
-amf/default_segmenter/img/n8n_screnshot.png
-
-
-```html
-<img src="img/n8n_screnshot.png" alt="n8n_screenshot" />
-```
-
-```html
-<div style="text-align:center;">
-    <img src="n8n_screnshot.png" alt="Image Description" width="100%">
-</div>
-```
