@@ -1,9 +1,10 @@
-from flask import Flask, request
+from flask import Flask, request,render_template_string
 from prometheus_flask_exporter import PrometheusMetrics
 
 from src.segmenter import Segmenter
 from src.data import Data
 from src.utility import handle_errors
+import markdown2
 
 import logging
 logging.basicConfig(datefmt='%H:%M:%S',
@@ -25,13 +26,19 @@ def segmenter_defult():
 		result=segmenter.segmenter_default()
 		return result
 	if request.method == 'GET':
-		info = (
-			"""Segmenter is an AMF compononet that segments arguments into propositions.
-			This is the default implmentation of a segmenter that uses simple regex.
-			It takes xIAF as an input to return xIAF as an output.
-			The component can be conected to propositionUnitizer to create argument mining pipeline."""
-			)
-		return info
+		# Read the markdown file
+		with open('README.md', 'r') as file:
+			md_content = file.read()
+
+		# Convert to HTML
+		html_content = markdown2.markdown(md_content)
+
+		# Add CSS link
+		css_link = '<link rel="stylesheet" href="https://example.com/path/to/your/styles.css">'
+		html_with_css = f"<html><head>{css_link}</head><body>{html_content}</body></html>"
+
+		# Render the HTML content as a template
+		return render_template_string(html_with_css)
 
 	
 if __name__ == "__main__":
