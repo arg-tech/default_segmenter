@@ -134,15 +134,7 @@ curl -X POST \
   http://your-server-url/bert-te
 ```
 
-### Using Web Interface
 
-The service can also be used to create a pipeline on our n8n interface. Simply create an HTTP node, configure the node including the URL of the service and the parameter name of the file (`file`).
-
-![n8n_screenshot](n8n_screenshot.jpeg)
-
-```
-<img src="n8n_screenshot.jpeg" alt="n8n_screenshot" />
-```
 
 ### Using Web Interface
 
