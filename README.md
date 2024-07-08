@@ -144,7 +144,7 @@ The service can also be used to create a pipeline on our n8n interface. Simply c
     <img src="n8n_screenshot.jpeg" alt="Image Description" width="100%">
 </div>
 
-<img src=".n8n_screenshot.jpeg" alt="n8n_screenshot" />
+<img src="img/n8n_screenshot.jpeg" alt="n8n_screenshot" />
 
 
 ```html
