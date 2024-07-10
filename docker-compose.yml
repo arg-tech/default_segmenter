@@ -2,6 +2,7 @@ version: '3'
 
 services:
   dam:
+    container_name: Default_segmenter
     build: .
     ports:
       - "5005:5005"
