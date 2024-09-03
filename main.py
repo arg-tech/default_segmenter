@@ -1,16 +1,21 @@
 from flask import Flask, request,render_template_string
 from prometheus_flask_exporter import PrometheusMetrics
+import markdown2
+from flask_cors import CORS
 
 from src.segmenter import Segmenter
 from src.data import Data
 from src.utility import handle_errors
-import markdown2
 
 import logging
 logging.basicConfig(datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
 app = Flask(__name__)
+
+
+
+CORS(app, resources={r"/*": {"origins": "https://arg-tech.github.io"}})
 metrics = PrometheusMetrics(app)
 	
 @app.route('/segmenter-01', methods = ['GET', 'POST'])
