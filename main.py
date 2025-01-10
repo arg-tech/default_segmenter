@@ -30,7 +30,7 @@ def segmenter_defult():
 		with open('README.md', 'r') as file:
 			md_content = file.read()
 
-		# Convert to HTML
+		# Convert to HTMLgi
 		html_content = markdown2.markdown(md_content)
 
 		# Add CSS link
