@@ -39,7 +39,7 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 # Expose port 5008 for the Flask app
-EXPOSE 5008
+EXPOSE 5005
 
 # Set the default command to run the application
 CMD ["python", "./main.py"]
