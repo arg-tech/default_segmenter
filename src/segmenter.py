@@ -19,7 +19,7 @@ class Segmenter():
 		self.file_obj.save(self.f_name)
 		file = open(self.f_name,'r')
 
-	def get_segments(self, input_text):
+	def get_segments(self, input_text): # regex
 		"""Segmenter that avoids splitting within decimal numbers and abbreviations."""
 		pattern = r'(?<!\d)\s*[.!?]\s+(?!\w\.)'
 		return re.split(pattern, input_text)
