@@ -6,5 +6,5 @@ services:
     container_name: default-segmenter
     build: .
     ports:
-      - "5008:5008"
+      - "5005:5005"
 
