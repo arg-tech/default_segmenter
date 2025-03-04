@@ -6,6 +6,10 @@ introduces new L-node entries for each of the new segments, and deletes the old 
 import re
 from flask import json
 import logging
+import spacy
+
+# Load the pre-trained spaCy model for English
+nlp = spacy.load("en_core_web_sm")
 from src.data import Data
 from xaif_eval import xaif
 from src.templates import SegmenterOutput
@@ -19,10 +23,10 @@ class Segmenter():
 		self.file_obj.save(self.f_name)
 		file = open(self.f_name,'r')
 
-	def get_segments(self, input_text): # regex
-		"""Segmenter that avoids splitting within decimal numbers and abbreviations."""
-		pattern = r'(?<!\d)\s*[.!?]\s+(?!\w\.)'
-		return re.split(pattern, input_text)
+	def get_segments(self, input_text):
+		"""Split input text into sentences using spaCy's sentence segmentation."""
+		doc = nlp(input_text)  # Process the input text using spaCy
+		return [sent.text.strip() for sent in doc.sents]  # Return sentences, stripping any extra spaces
 
 	def is_valid_json(self):
 		''' check if the file is valid json
