@@ -20,8 +20,9 @@ class Segmenter():
 		file = open(self.f_name,'r')
 
 	def get_segments(self, input_text):
-		"""Simple segmenter splitting texts based on regex while handling decimal points and abbreviations."""
-		return re.split(r'(?<!\b(?:Dr|Mr|Mrs|Ms|St|Jr|Sr|vs|e\.g|i\.e|etc))(?<!\d)[.!?](?!\d)', input_text)
+		"""Segmenter that avoids splitting within decimal numbers and abbreviations."""
+		pattern = r'(?<!\d)\s*[.!?]\s+(?!\w\.)'
+		return re.split(pattern, input_text)
 
 	def is_valid_json(self):
 		''' check if the file is valid json
