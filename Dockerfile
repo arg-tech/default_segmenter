@@ -1,4 +1,3 @@
-# Use Python 3.8 base image
 FROM python:3.12
 
 # Install system dependencies (for spaCy and its dependencies)
