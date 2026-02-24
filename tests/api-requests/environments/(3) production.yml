@@ -1,0 +1,4 @@
+name: (3) production
+variables:
+  - name: baseUrl
+    value: http://default-segmenter.amfws.arg.tech

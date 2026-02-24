@@ -1,0 +1,4 @@
+name: (2) staging
+variables:
+  - name: baseUrl
+    value: http://default-segmenter.amfws.staging.arg.tech
