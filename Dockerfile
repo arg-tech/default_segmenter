@@ -1,44 +1,38 @@
-FROM python:3.12
+FROM python:3.12-slim@sha256:9e01bf1ae5db7649a236da7be1e94ffbbbdd7a93f867dd0d8d5720d9e1f89fab AS builder
 
-# Install system dependencies (for spaCy and its dependencies)
 RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
-    libatlas-base-dev \
+    libopenblas-dev \
     gfortran \
     curl \
     git \
-    wget
+    && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip, setuptools, and wheel (to ensure we're using the latest version)
-RUN pip install --upgrade pip setuptools wheel
+WORKDIR /build
 
-# Install spaCy (make sure the compatible version with Python 3.8 is installed)
-RUN pip3 install spacy==3.7.5  # Change this to a specific compatible version, e.g. 2.2.4
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Download the necessary spaCy language model (en_core_web_sm)
-RUN python -m spacy download en_core_web_sm
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install required Python dependencies
-RUN pip3 install tqdm
-RUN pip3 install Cython
-RUN pip install xaif_eval==0.0.9
-RUN pip3 install markdown2
-RUN pip3 install flask-cors
+FROM python:3.12-slim@sha256:9e01bf1ae5db7649a236da7be1e94ffbbbdd7a93f867dd0d8d5720d9e1f89fab AS runtime
 
-
-
-# Copy the application files into the container
-COPY . /app
-
-# Set the working directory to /app
 WORKDIR /app
 
-# Install additional Python dependencies from requirements.txt
-RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libopenblas-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Expose port 5008 for the Flask app
+COPY --from=builder /opt/venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY . /app
+
 EXPOSE 5005
 
-# Set the default command to run the application
-CMD ["python", "./main.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5005", "--workers", "4", "main:app"]

@@ -1,0 +1,4 @@
+name: (1) local
+variables:
+  - name: baseUrl
+    value: http://localhost:5005

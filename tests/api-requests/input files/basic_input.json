@@ -1,0 +1,15 @@
+{
+  "AIF": {
+    "nodes": [
+      {
+        "nodeID": "1",
+        "text": "The SNP is a big party. There are many disagreements within it.",
+        "type": "L"
+      }
+    ],
+    "edges": [],
+    "locutions": [],
+    "participants": []
+  }
+}
+
