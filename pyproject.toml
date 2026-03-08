@@ -1,0 +1,17 @@
+[project]
+name = "default-segmenter"
+version = "0.1.0"
+description = "Default text segmenter using spaCy sentence splitting"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask==3.1.3",
+    "flask-cors==6.0.2",
+    "gunicorn==25.1.0",
+    "markdown2==2.5.4",
+    "prometheus-flask-exporter==0.23.2",
+    "spacy==3.7.5",
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl",
+    "xaif-eval==0.0.9",
+    "numpy<2",
+]
